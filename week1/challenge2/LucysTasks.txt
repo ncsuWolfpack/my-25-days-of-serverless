@@ -1,0 +1,311 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Deliver_Coffee_To_Sister_And_Brother": {
+                "inputs": {
+                    "interval": {
+                        "count": 4,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Deliver_Coffee_to_Sister_and_Brother_Reminder": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Wait"
+            },
+            "Deliver_Coffee_to_Mom_and_Dad": {
+                "inputs": {
+                    "interval": {
+                        "count": 4,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Deliver_Coffee_to_Mom_and_Dad_Reminder": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Wait"
+            },
+            "Deliver_Coffee_to_Mom_and_Dad_Reminder": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>deliver the coffee to Mom and Dad</p>",
+                        "Subject": "Reminder",
+                        "To": "@parameters('EmailAddress')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {
+                    "Light_the_Candles": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Deliver_Coffee_to_Sister_and_Brother_Reminder": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>deliver the coffee to Sister and Brother</p>",
+                        "Subject": "Reminder",
+                        "To": "@parameters('EmailAddress')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {
+                    "Relight_the_Candles": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Light_the_Candles": {
+                "inputs": {
+                    "interval": {
+                        "count": 5,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Light_the_Candles_Reminder": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Wait"
+            },
+            "Light_the_Candles_Reminder": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>&nbsp;light the candles</p>",
+                        "Subject": "Reminder",
+                        "To": "@parameters('EmailAddress')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {
+                    "Pour_the_Coffee": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Pour_Two_Cups_Reminder": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>pour two cups</p>",
+                        "Subject": "Reminder",
+                        "To": "@parameters('EmailAddress')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {
+                    "Wait_for_Coffee": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Pour_the_Coffee": {
+                "inputs": {
+                    "interval": {
+                        "count": 5,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Pour_Two_Cups_Reminder": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Wait"
+            },
+            "Relight_the_Candles": {
+                "inputs": {
+                    "interval": {
+                        "count": 5,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Relight_the_Candles_Reminder": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Wait"
+            },
+            "Relight_the_Candles_Reminder": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>relight the candles</p>",
+                        "Subject": "Reminder",
+                        "To": "@parameters('EmailAddress')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {
+                    "Return_to_Kitchen": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Return_to_Kitchen": {
+                "inputs": {
+                    "interval": {
+                        "count": 1,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Return_to_Kitchen_Reminder": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Wait"
+            },
+            "Return_to_Kitchen_Again_Reminder": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>return to kitchen, take a break!</p>",
+                        "Subject": "Reminder",
+                        "To": "@parameters('EmailAddress')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {
+                    "Deliver_Coffee_To_Sister_And_Brother": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Return_to_Kitchen_Reminder": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>&nbsp;return to kitchen, fill two more cups</p>",
+                        "Subject": "Reminder",
+                        "To": "@parameters('EmailAddress')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {
+                    "Deliver_Coffee_to_Mom_and_Dad": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Start_the_Coffee_Reminder": {
+                "inputs": {
+                    "body": {
+                        "Body": "<p>start the coffee, set out 4 cups</p>",
+                        "Subject": "Reminder",
+                        "To": "@parameters('EmailAddress')"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/Mail"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            },
+            "Wait_for_Coffee": {
+                "inputs": {
+                    "interval": {
+                        "count": 25,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Start_the_Coffee_Reminder": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Wait"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            },
+            "EmailAddress": {
+                "defaultValue": "erik.c.harris@gmail.com",
+                "type": "String"
+            }
+        },
+        "triggers": {
+            "Recurrence": {
+                "recurrence": {
+                    "frequency": "Month",
+                    "interval": 12,
+                    "startTime": "2019-12-02T08:00:00Z",
+                    "timeZone": "W. Europe Standard Time"
+                },
+                "type": "Recurrence"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "office365": {
+                    "connectionId": "/subscriptions/54cd1399-2e9a-4bd5-8a69-5981901d8f60/resourceGroups/cloud-shell-storage-eastus/providers/Microsoft.Web/connections/office365-1",
+                    "connectionName": "office365-1",
+                    "id": "/subscriptions/54cd1399-2e9a-4bd5-8a69-5981901d8f60/providers/Microsoft.Web/locations/eastus/managedApis/office365"
+                }
+            }
+        }
+    }
+}
